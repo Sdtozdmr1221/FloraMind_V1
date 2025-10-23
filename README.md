@@ -1,7 +1,7 @@
 # FloraMind_V1
 
 
-##Project Status : In Development..
+## Project Status : In Development..
 
 ### Basic System Configuration
 - Added data models for user, plant and content classes.
