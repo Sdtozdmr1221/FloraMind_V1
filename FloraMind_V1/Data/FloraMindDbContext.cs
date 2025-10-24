@@ -5,7 +5,7 @@ namespace FloraMind_V1.Data
 {
 
     
-    public class FloraMindDbContext : DbContext    //veritabanı ile site arasındaki köprü
+    public class FloraMindDbContext : DbContext    //veritabanı ile site arasındaki köprü sınıf
     {
         public FloraMindDbContext(DbContextOptions<FloraMindDbContext> options) // Yapıcı metod
             : base(options){}
