@@ -70,7 +70,7 @@ namespace FloraMind_V1.Controllers
 
         }
 
-            private string HashPassword(string password) //kullanıcı şifre koruma metodu
+        private string HashPassword(string password) //kullanıcı şifre koruma metodu
         {
             using var sha256 = SHA256.Create();
             byte[] bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
@@ -78,8 +78,53 @@ namespace FloraMind_V1.Controllers
         }
 
 
-    }
+        public IActionResult Login()
+        {
+            return View();
+        }
 
 
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(LoginViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var user = await _context.Users
+    .FirstOrDefaultAsync(u => u.Email == model.Email);
+
+            if (user == null || !VerifyPassword(model.Password, user.PasswordHash))
+            {
+                ModelState.AddModelError(string.Empty, "Geçersiz email veya şifre");
+                return View(model);
+            }
+
+
+            HttpContext.Session.SetString("UserEmail", user.Email);
+            HttpContext.Session.SetString("UserName", user.Name);
+
+            return RedirectToAction("Index", "Home");
+        }
+
+
+
+
+        private bool VerifyPassword(string EnteredPassword, string storedHashPassword)
+        {
+            return HashPassword(EnteredPassword) == storedHashPassword;
+        }
+
+        [HttpPost]
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear(); //  oturumu kapat
+            return RedirectToAction("Index", "Home");
+        }
+
     }
+}
 
