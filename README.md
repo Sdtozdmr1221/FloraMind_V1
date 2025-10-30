@@ -9,3 +9,7 @@
 
 ### Project Status : In Development
 
+
+### Project Logo :
+
+![FloraMindLogo](https://github.com/user-attachments/assets/acc17669-159c-492a-8d28-a76fadbd2bdb)
