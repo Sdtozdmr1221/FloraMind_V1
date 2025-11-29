@@ -1,5 +1,49 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{
+    ViewData["Title"] = "Kayıt Ol";
+    Layout = null;
 }
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="~/css/Register.css" />
+</head>
+<body>
+    <div class="container" id="registerContainer">
+        <div class="logo-icon">
+            <i class="fas fa-seedling"></i>
+        </div>
+        <h2>Kayıt Ol</h2>
+        <div class="social-icons">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+        </div>
+        <form id="registerForm">
+            <div class="input-group">
+                <i class="fas fa-user"></i>
+                <input type="text" id="name" placeholder="Name">
+            </div>
+            <div class="input-group">
+                <i class="fas fa-envelope"></i>
+                <input type="email" id="email" placeholder="Email">
+            </div>
+            <div class="input-group">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="password" placeholder="Password">
+            </div>
+            <div class="button-group">
+                <button type="submit" class="btn-register btn-primary">Kayıt Ol</button>
+                <a href="#" id="goToLogin" class="btn-register btn-secondary">Giriş Yap</a>
+            </div>
+            <div class="home-button">
+                <a href="#" id="goToLayout" class="btn-register btn-primary">Ana Sayfaya Dön</a>
+            </div>
+        </form>
+    </div>
+    <script src="~/js/register.js"></script>
+</body>
+</html>
