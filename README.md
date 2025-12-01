@@ -14,3 +14,7 @@
 ### Project Logo :
 
 ![FloraMindLogo](https://github.com/user-attachments/assets/acc17669-159c-492a-8d28-a76fadbd2bdb)
+
+### UML Diagram :
+
+![UML_FloraMind](https://github.com/user-attachments/assets/c66e7861-f9d4-483f-990d-96aafb408506)
