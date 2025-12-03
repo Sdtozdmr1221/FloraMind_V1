@@ -1,4 +1,5 @@
-﻿@{
+﻿@model FloraMind_V1.Models.LoginViewModel
+@{
     ViewData["Title"] = "Giriş Yap";
     Layout = null;
 }
@@ -17,29 +18,46 @@
             <i class="fas fa-seedling"></i>
         </div>
         <h2>Giriş Yap</h2>
+
         <div class="social-icons">
             <a href="#"><i class="fab fa-facebook-f"></i></a>
             <a href="#"><i class="fab fa-instagram"></i></a>
             <a href="#"><i class="fab fa-twitter"></i></a>
         </div>
-        <form id="loginForm">
+
+        <form id="loginForm" action="@Url.Action("Login", "Account")" method="post">
+
+            @Html.AntiForgeryToken()
+
+            <div class="text-danger">@Html.ValidationSummary(false)</div>
+
             <div class="input-group">
                 <i class="fas fa-envelope"></i>
-                <input type="email" placeholder="Email">
+                <input type="email" name="Email" placeholder="Email" value="@Model?.Email">
             </div>
+            <span class="text-danger">@Html.ValidationMessageFor(m => m.Email)</span>
+
             <div class="input-group">
                 <i class="fas fa-lock"></i>
-                <input type="password" placeholder="Password">
+                <input type="password" name="Password" placeholder="Password">
             </div>
+            <span class="text-danger">@Html.ValidationMessageFor(m => m.Password)</span>
+
             <div class="button-group">
                 <button type="submit" class="btn-register btn-primary">Giriş Yap</button>
-                <a href="#" id="goToRegister" class="btn-register btn-secondary">Kayıt Ol</a>
+
+                <a href="@Url.Action("Register", "Account")" id="goToRegister" class="btn-register btn-secondary">Kayıt Ol</a>
             </div>
+
             <div class="home-button">
-                <a href="#" id="goToLayout" class="btn-register btn-primary">Giriş Sayfasına Dön</a>
+                <a href="@Url.Action("Index", "Home")" id="goToLayout" class="btn-register btn-primary">Giriş Sayfasına Dön</a>
             </div>
         </form>
     </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
     <script src="~/js/login.js"></script>
 </body>
 </html>
