@@ -1,7 +1,10 @@
 ﻿body {
     margin: 0;
     padding: 0;
-    background-color: #A3B18A;
+    background-image: url('/images/arka1.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     display: flex;
     justify-content: center;
     align-items: center;

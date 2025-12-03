@@ -1,0 +1,155 @@
+﻿* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 10px;
+}
+
+.gallery-container {
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin: -16px -50vw 0 -50vw;
+}
+
+.image_slider {
+    width: 100%;
+    height: 60vh;   
+    min-height: 400px; 
+    max-height: 700px; 
+    overflow: hidden;
+    margin: 0;
+    position: relative;
+    border-radius: 0;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    background-color: #132A13;
+    display: flex;
+    padding: 0;
+}
+
+.slide {
+    min-width: 100%;
+    height: 100%;
+    transition: transform 0.5s ease-in-out;
+    flex-shrink: 0;
+}
+
+    .slide img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        display: block;
+    }
+
+button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 0;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    cursor: pointer;
+    z-index: 10;
+    transition: background-color 0.3s;
+}
+
+    button:hover {
+        background-color: rgba(0, 0, 0, 0.7);
+    }
+
+#prev {
+    left: 10px;
+}
+
+#next {
+    right: 10px;
+}
+
+.circles {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    z-index: 10;
+}
+
+.circle {
+    width: 10px;
+    height: 10px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+    .circle.active {
+        background-color: white;
+    }
+
+/* Responsive Ayarlar */
+@media (max-width: 1400px) {
+    .image_slider {
+        height: 55vh;
+    }
+}
+
+@media (max-width: 1200px) {
+    .image_slider {
+        height: 50vh;
+    }
+}
+
+@media (max-width: 992px) {
+    .image_slider {
+        height: 45vh;
+        min-height: 350px;
+    }
+}
+
+@media (max-width: 768px) {
+    .image_slider {
+        height: 40vh;
+        min-height: 300px;
+    }
+
+    button {
+        width: 35px;
+        height: 35px;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 576px) {
+    .image_slider {
+        height: 35vh;
+        min-height: 250px;
+    }
+
+    button {
+        width: 30px;
+        height: 30px;
+    }
+
+    #prev {
+        left: 5px;
+    }
+
+    #next {
+        right: 5px;
+    }
+}

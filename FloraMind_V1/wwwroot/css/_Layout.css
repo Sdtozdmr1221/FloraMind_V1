@@ -4,6 +4,8 @@
     color: white;
     padding: 10px 0;
     text-align: center;
+    width: 100%;
+    margin: 0;
 }
 
 .top-bar-content p {
@@ -15,6 +17,8 @@
     background-color: #fff;
     border-bottom: 2px solid #31572C;
     padding: 10px 20px;
+    width: 100%;
+    margin: 0;
 }
 
 .navbar-container {
