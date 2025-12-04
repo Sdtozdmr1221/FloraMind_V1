@@ -27,9 +27,9 @@
     registerForm.addEventListener('submit', function (e) {
         e.preventDefault();
 
-        const nameInput = document.getElementById('name');
-        const emailInput = document.getElementById('email');
-        const passwordInput = document.getElementById('password');
+        const nameInput = document.getElementById('UserName');
+        const emailInput = document.getElementById('Email');
+        const passwordInput = document.getElementById('Password');
         let isValid = true;
 
         // İsim kontrolü

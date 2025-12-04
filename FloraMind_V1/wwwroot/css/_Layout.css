@@ -14,11 +14,10 @@
 }
 
 .navbar {
-    background-color: #fff;
-    border-bottom: 2px solid #31572C;
-    padding: 10px 20px;
-    width: 100%;
-    margin: 0;
+    padding: 0;
+    margin: 0 ;
+    border-bottom: !important;
+    box-shadow: none !important;
 }
 
 .navbar-container {
@@ -32,12 +31,14 @@
     align-items: center;
     gap: 10px;
     text-decoration: none;
+    padding: 10px 0;
 }
 
-.navbar-brand img {
-    width: 80px;
-    height: 80px;
-    object-fit: contain;
+    .navbar-brand img {
+        width: 80px;
+        height: 80px;
+        object-fit: contain;
+        display: block;
     }
 
 .brand-text {
@@ -113,4 +114,13 @@
      padding: 15px;
      font-size: 14px;
      color: #666;
+}
+.container, .container-fluid {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+main {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
 }
