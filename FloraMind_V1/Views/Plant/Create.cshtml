@@ -1,0 +1,22 @@
+﻿@model FloraMind_V1.Models.Plant
+
+@{
+    ViewData["Title"] = "Yeni Katalog Bitkisi Ekle";
+}
+
+<h2>Yeni Bitki Ekle</h2>
+<hr />
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label asp-for="Name">Bitki Adı (Ortak)</label>
+        <input asp-for="Name" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Species">Bitki Türü (Bilimsel)</label>
+        <input asp-for="Species" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3">Kataloğa Kaydet</button>
+</form>
+
+<a asp-action="Index">Katalog Listesine Dön</a>

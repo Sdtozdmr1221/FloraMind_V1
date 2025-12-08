@@ -1,0 +1,33 @@
+﻿@model FloraMind_V1.Models.Content
+
+@{
+    ViewData["Title"] = "İçerik Detayları";
+    
+}
+
+<h2>İçerik Detayları: @Model.Title</h2>
+<hr />
+
+<div>
+    <dl class="row">
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Title)</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.Title)</dd>
+
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Body)</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.Body)</dd>
+
+        <dt class="col-sm-3">Ait Olduğu Bitki</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.Plant.Name)</dd>
+
+        <dt class="col-sm-3">Ekleyen Kullanıcı</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.User.Name)</dd>
+
+        <dt class="col-sm-3">Oluşturulma Tarihi</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.DateCreated)</dd>
+    </dl>
+</div>
+
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.ContentID" class="btn btn-info">Düzenle</a> |
+    <a asp-action="Index">İçerik Listesine Geri Dön</a>
+</div>

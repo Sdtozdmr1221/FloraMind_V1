@@ -1,0 +1,46 @@
+﻿@model FloraMind_V1.Models.Content
+
+@{
+    ViewData["Title"] = "Yeni İçerik Ekle";
+  
+}
+
+<h2>Yeni İçerik Ekle</h2>
+<hr />
+
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group mb-3">
+                <label asp-for="PlantID">İçeriğin Ait Olduğu Bitki</label>
+                <select asp-for="PlantID" class="form-control" asp-items="ViewBag.PlantID">
+                    <option value="">-- Bitki Seçiniz --</option>
+                </select>
+                <span asp-validation-for="PlantID" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Title">İçerik Başlığı</label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-4">
+                <label asp-for="Body">İçerik Metni</label>
+                <textarea asp-for="Body" class="form-control" rows="8"></textarea>
+                <span asp-validation-for="Body" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-success">İçeriği Kaydet</button>
+            <a asp-action="Index" class="btn btn-secondary">İptal</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,27 @@
+﻿@model FloraMind_V1.Models.Content
+
+@{
+    ViewData["Title"] = "İçerik Silme Onayı";
+    
+}
+
+<h2>Silme Onayı</h2>
+
+<h3>Bu içerik kaydını silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.</h3>
+<hr />
+
+<div>
+    <dl class="row">
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Title)</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.Title)</dd>
+
+        <dt class="col-sm-3">Ait Olduğu Bitki</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.Plant.Name)</dd>
+    </dl>
+
+    <form asp-action="Delete" method="post">
+        <input type="hidden" asp-for="ContentID" />
+        <button type="submit" class="btn btn-danger">Sil</button> |
+        <a asp-action="Index">İptal ve Geri Dön</a>
+    </form>
+</div>

@@ -1,0 +1,89 @@
+﻿@* Views/Admin/Index.cshtml *@
+
+@{
+    ViewData["Title"] = "Admin Gösterge Paneli";
+    // Eğer oluşturduysanız, ortak Admin layout'unuzu kullanın.
+    // Layout = "_AdminLayout";
+}
+
+<style>
+    /* Yönetim Kutucukları İçin Stil */
+    .dashboard-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Yan yana iki kutucuk */
+        gap: 30px;
+        margin-top: 30px;
+    }
+
+    .action-card {
+        display: block; /* A tagini tam kartı kaplayacak şekilde yapar */
+        height: 200px;
+        border-radius: 15px;
+        background-size: cover;
+        background-position: center;
+        text-decoration: none;
+        color: white;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        position: relative;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .action-card:hover {
+        transform: translateY(-5px); /* Hafif yukarı kalkma efekti */
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .card-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.55); /* Yarı şeffaf koyu katman */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        text-align: center;
+    }
+
+    .card-title {
+        font-size: 1.8rem;
+        font-weight: bold;
+        margin: 0;
+    }
+
+    /* Arka Plan Resimleri: wwwroot/images klasöründe bu isimlerde resim olmalı */
+    #plant-management {
+        background-image: url('/images/bg-plant-manage.jpg');
+    }
+
+    #content-management {
+        background-image: url('/images/bg-content-manage.jpg');
+    }
+</style>
+
+<h1>Admin Paneli</h1>
+<hr />
+
+<div class="dashboard-grid">
+
+    <a asp-controller="Plant" asp-action="Index" id="plant-management" class="action-card">
+        <div class="card-overlay">
+            <i class="fas fa-seedling fa-3x mb-2"></i> <h2 class="card-title">🌿 Bitki Kataloğu Yönetimi</h2>
+            <p>Katalog bitkilerini listele, ekle, düzenle ve sil.</p>
+        </div>
+    </a>
+
+    <a asp-controller="Content" asp-action="Index" id="content-management" class="action-card">
+        <div class="card-overlay">
+            <i class="fas fa-file-alt fa-3x mb-2"></i> <h2 class="card-title">📝 İçerik Yönetimi</h2>
+            <p>Bitkilere ait makale ve açıklamaların listesi.</p>
+        </div>
+    </a>
+
+</div>
+
+<p class="mt-4 text-muted">Hızlı erişim ve yönetim için yukarıdaki kutucukları kullanın.</p>

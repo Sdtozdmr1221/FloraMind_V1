@@ -23,12 +23,12 @@ namespace FloraMind_V1.Models
         public DateTime? DateCreated { get; set; } = DateTime.UtcNow; //İçeriğin Oluşturulma Tarihi
 
         //foreign keys
-        public int UserID { get; set; } //İçeriğin Kullanıcı ID'si
+        public int? UserID { get; set; } //İçeriğin Kullanıcı ID'si
         public User User { get; set; } //İçeriğin Kullanıcı Nesnesi
 
 
         [ForeignKey("Plant")]
-        public int PlantID { get; set; } //İçeriğin Bitki ID'si
+        public int? PlantID { get; set; } //İçeriğin Bitki ID'si
         public Plant Plant { get; set; } //İçeriğin Bitki Nesnesi
     }
 }

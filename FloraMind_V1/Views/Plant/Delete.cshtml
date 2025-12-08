@@ -1,0 +1,26 @@
+﻿@model FloraMind_V1.Models.Plant
+
+@{
+    ViewData["Title"] = "Bitki Silme Onayı";
+}
+
+<h2>Silme Onayı</h2>
+
+<h3>Bu bitki kaydını silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.</h3>
+<hr />
+
+<div>
+    <dl class="row">
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Name)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.Name)</dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Species)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.Species)</dd>
+    </dl>
+
+    <form asp-action="Delete" method="post">
+        <input type="hidden" asp-for="PlantID" />
+        <button type="submit" class="btn btn-danger">Sil</button> |
+        <a asp-action="Index">İptal ve Geri Dön</a>
+    </form>
+</div>
