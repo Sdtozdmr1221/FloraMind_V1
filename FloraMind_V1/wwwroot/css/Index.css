@@ -38,7 +38,7 @@ main {
 
 .image_slider {
     width: 100%;
-    height: 100vh; /* Tam ekran yükseklik */
+    height: 100vh; 
     overflow: hidden;
     margin: 0 !important;
     position: relative;
@@ -46,21 +46,74 @@ main {
     background-color: #132A13;
     display: flex;
 }
-
+ 
 .slide {
     min-width: 100%;
     height: 100%;
     transition: transform 0.5s ease-in-out;
     flex-shrink: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
-    .slide img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        object-position: center;
-        display: block;
+.slide-text {
+    position: absolute;
+    top: 60%;
+    left: 100px;
+    transform: translateY(-50%);
+    text-align: left;
+    color: white;
+    max-width: 800px;
+}
+
+    .slide-text h2 {
+        font-size: 80px;
+        font-weight: 400;
+        font-family: Cambria, Georgia, serif;
+        margin: 0 0 20px 0;
+        text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.7);
+        line-height: 1.2;
+        letter-spacing: 3px;
     }
+
+    .slide-text p {
+        font-size: 25px;
+        line-height: 1.5;
+        margin: 0;
+        text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
+    }
+
+/* Responsive */
+@media (max-width: 1200px) {
+    .slide-text {
+        left: 80px;
+    }
+
+        .slide-text h2 {
+            font-size: 60px;
+        }
+
+        .slide-text p {
+            font-size: 20px;
+        }
+}
+
+@media (max-width: 768px) {
+    .slide-text {
+        left: 40px;
+        right: 40px;
+        max-width: none;
+    }
+
+        .slide-text h2 {
+            font-size: 40px;
+        }
+
+        .slide-text p {
+            font-size: 16px;
+        }
+}
 
 button {
     position: absolute;

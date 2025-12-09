@@ -8,14 +8,29 @@
 
 <div class="gallery-container">
     <div class="image_slider">
-        <div class="slide">
-            <img src="~/images/slide1.jpg" alt="Slide 1">
+        <div class="slide" style="background-image: url('@Url.Content("~/images/slide1.jpg")');">
+            <div class="slide-text">
+                <h2>Akıllı Takip</h2>
+                <p> Bitkilerinizi yönetin, bakımlarını takip edin</p>
+            </div>
         </div>
-        <div class="slide">
-            <img src="~/images/slide2.jpg" alt="Slide 2">
+        <div class="slide" style="background-image: url('@Url.Content("~/images/slide2.jpg")');">
+            <div class="slide-text">
+                <h2>Sulama Takip Sistemi</h2>
+                <p>Bitkilerinizin büyüme sürecini takip edin</p>
+            </div>
         </div>
-        <div class="slide">
-            <img src="~/images/slide3.jpg" alt="Slide 3">
+        <div class="slide" style="background-image: url('@Url.Content("~/images/slide3.jpg")');">
+            <div class="slide-text">
+                <h2>Hatırlatma Sistemi</h2>
+                <p>Sulama ve bakım zamanlarını otomatik olarak planlayın.</p>
+            </div>
+        </div>
+        <div class="slide" style="background-image: url('@Url.Content("~/images/slide4.jpg")');">
+            <div class="slide-text">
+                <h2>Bitki Kütüphanesi</h2>
+                <p>Bitkilerinizi kaydedin, bakım geçmişini saklayın</p>
+            </div>
         </div>
         <button type="button" id="prev">
             <i class="fas fa-chevron-left"></i>
@@ -27,33 +42,10 @@
             <div class="circle"></div>
             <div class="circle"></div>
             <div class="circle"></div>
+            <div class="circle"></div>
         </div>
     </div>
 </div>
-<div class="services-section">
-    <div class="section-header">
-        <h3 class="section-title">Flora Mind</h3>
-        <p class="section-subtitle">Bitki bakımında uzman çözümler ve profesyonel hizmetler sunuyoruz. Evinizdeki bitkilerin sağlıklı ve canlı kalması için ihtiyacınız olan tüm hizmetleri bir arada bulabilirsiniz.</p>
-    </div>
-
-    <div class="services-container">
-        <div class="service-card">
-            <h3>Bakım Takip Sistemi</h3>
-            <p>Bitkilerinizin büyüme sürecini takip edin, gelişim grafikleri ile performansını izleyin ve bakım işlemlerini kayıt altına alın.</p>
-        </div>
-
-        <div class="service-card">
-            <h3>Akıllı Hatırlatıcı</h3>
-            <p>Bitkilerinizin sulama ve bakım zamanlarını otomatik hatırlatın.</p>
-        </div>
-
-        <div class="service-card">
-            <h3>Bitki Kütüphanesi</h3>
-            <p>Bitkilerinizi kaydedin, bakım geçmişini saklayın.</p>
-        </div>
-    </div>
-</div>
-
 @section Scripts {
     <script src="~/js/Index.js"></script>
 }
