@@ -1,89 +1,87 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Security.Cryptography;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using FloraMind_V1.Data;
 using FloraMind_V1.Models;
-using System.Text;
+using FloraMind_V1.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using System.Security.Claims;
+using FloraMind_V1.Helpers; // Statik şifreleme metotları buradan gelir
 
 namespace FloraMind_V1.Controllers
 {
-    public class AccountController : Controller //Kullanıcı işlemleri için kontrolcü
+    public class AccountController : Controller
     {
+        private readonly FloraMindDbContext _context;
+        private readonly IUserService _userService;
 
-        private readonly FloraMindDbContext _context; //veritabanına erişim
-
-        public AccountController(FloraMindDbContext context)
+        // Tek ve birleşik constructor (DI için)
+        public AccountController(FloraMindDbContext context, IUserService userService)
         {
             _context = context;
+            _userService = userService;
         }
-
 
         public IActionResult Index()
         {
             return View();
         }
 
-
-
         public IActionResult Register()
         {
             return View();
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterViewModel model) //Account/Register sayfasından gelen isteği karşılar
+        public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-            if (await _context.Users.AnyAsync(u => u.Email == model.Email)) //Email veritabanında kayıtlı mı?
+            if (await _context.Users.AnyAsync(u => u.Email == model.Email))
             {
                 ModelState.AddModelError("Email", "Email zaten kayıtlı");
                 return View(model);
             }
 
-
-            string passwordHash = HashPassword(model.Password);
+            string passwordHash = SecurityHelper.HashPassword(model.Password);
 
             var user = new User
             {
                 Name = model.UserName,
                 Email = model.Email,
                 PasswordHash = passwordHash,
+                RegistrationDate = DateTime.UtcNow,
+                LastLoginDate = null,
+                Role = "User"
             };
 
-
             _context.Users.Add(user);
-
             await _context.SaveChangesAsync();
 
-            // oturum açma için depolama
-            HttpContext.Session.SetString("UserEmail", user.Email);
-            HttpContext.Session.SetString("UserName", user.Name);
+            // Yeni kayıttan sonra otomatik oturum açma
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.UserID.ToString()),
+                new Claim(ClaimTypes.Name, user.Name),
+                new Claim(ClaimTypes.Role, user.Role)
+            };
+
+            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+            await HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                new ClaimsPrincipal(claimsIdentity));
 
             return RedirectToAction("Index", "Home");
-
         }
-
-        private string HashPassword(string password) //kullanıcı şifre koruma metodu
-        {
-            using var sha256 = SHA256.Create();
-            byte[] bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
-            return Convert.ToBase64String(bytes);
-        }
-
 
         public IActionResult Login()
         {
             return View();
         }
-
-
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -95,36 +93,53 @@ namespace FloraMind_V1.Controllers
             }
 
             var user = await _context.Users
-    .FirstOrDefaultAsync(u => u.Email == model.Email);
+                .FirstOrDefaultAsync(u => u.Email == model.Email);
 
-            if (user == null || !VerifyPassword(model.Password, user.PasswordHash))
+            // Kullanıcı ve Şifre Kontrolü (Statik VerifyPassword kullanıldı)
+            if (user == null || !SecurityHelper.VerifyPassword(model.Password, user.PasswordHash))
             {
                 ModelState.AddModelError(string.Empty, "Geçersiz email veya şifre");
                 return View(model);
             }
 
+            // Hesap Askıya Alma Kontrolü
+            if (user.IsBanned)
+            {
+                ModelState.AddModelError(string.Empty, "Hesabınız yönetici tarafından askıya alınmıştır.");
+                return View(model);
+            }
 
-            HttpContext.Session.SetString("UserEmail", user.Email);
-            HttpContext.Session.SetString("UserName", user.Name);
+            await _userService.UpdateLastLoginDateAsync(user.UserID);
+
+            // CLAIMS TABANLI OTURUM AÇMA
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.UserID.ToString()),
+                new Claim(ClaimTypes.Name, user.Name),
+                new Claim(ClaimTypes.Role, user.Role)
+            };
+
+            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+            var authProperties = new AuthenticationProperties
+            {
+                IsPersistent = true
+            };
+
+            await HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                new ClaimsPrincipal(claimsIdentity),
+                authProperties);
 
             return RedirectToAction("Index", "Home");
-        }
-
-
-
-
-        private bool VerifyPassword(string EnteredPassword, string storedHashPassword)
-        {
-            return HashPassword(EnteredPassword) == storedHashPassword;
         }
 
         [HttpPost]
-        public IActionResult Logout()
+        public async Task<IActionResult> Logout()
         {
-            HttpContext.Session.Clear(); //  oturumu kapat
+            // Cookie tabanlı oturumu kapatma
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Index", "Home");
         }
-
     }
 }
-

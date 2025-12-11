@@ -1,88 +1,108 @@
-﻿@* Views/Admin/Index.cshtml *@
+﻿@* views/admin/index.cshtml *@
 
 @{
-    ViewData["Title"] = "Admin Gösterge Paneli";
-    
+    ViewData["Title"] = "Admin Kontrol Paneli";
 }
 
 <style>
-    /* Yönetim Kutucukları İçin Stil */
-    .dashboard-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
-        gap: 30px;
-        margin-top: 30px;
+    /* Yönetim Merkezi için özel stil ayarları */
+    .dashboard-header {
+        border-bottom: 2px solid #e0e0e0;
+        padding-bottom: 15px;
+        margin-bottom: 30px;
     }
 
+    /* Aksiyon Kartları (Kısayollar) */
     .action-card {
-        display: block; 
-        height: 200px;
-        border-radius: 15px;
-        background-size: cover;
-        background-position: center;
+        display: flex; /* İçeriğin esnek kutu olmasını sağlar */
+        flex-direction: column; /* İçeriği dikey sıralar */
+        justify-content: center; /* İçeriği dikeyde ortalar */
+        align-items: center; /* İçeriği yatayda ortalar */
+
+        padding: 25px;
+        border-radius: 8px;
+        transition: transform 0.2s, box-shadow 0.2s;
         text-decoration: none;
-        color: white;
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-        position: relative;
-        overflow: hidden;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
+        color: inherit;
+        min-height: 200px;
+        height: 100%; 
 
-    .action-card:hover {
-        transform: translateY(-5px); 
-        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-    }
-
-    .card-overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0, 0, 0, 0.55); 
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        padding: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         text-align: center;
     }
 
-    .card-title {
-        font-size: 1.8rem;
-        font-weight: bold;
-        margin: 0;
+        .action-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+    .action-icon {
+        font-size: 3.5rem;
+        margin-bottom: 10px;
     }
 
-    
-    #plant-management {
-        background-image: url('/images/bg-plant-manage.jpg');
+    .action-title {
+        font-weight: 700;
+        font-size: 1.5rem;
+        margin-top: 10px;
+        margin-bottom: 5px;
     }
 
-    #content-management {
-        background-image: url('/images/bg-content-manage.jpg');
+    /* Kart Renkleri */
+    .bg-custom-primary {
+        background-color: #4e73df !important;
+        color: white !important;
+    }
+
+    .bg-custom-success {
+        background-color: #1cc88a !important;
+        color: white !important;
+    }
+
+    .bg-custom-warning {
+        background-color: #f6c23e !important;
+        color: white !important;
     }
 </style>
 
-<h1>Admin Paneli</h1>
-<hr />
+<div class="container-fluid">
 
-<div class="dashboard-grid">
+    <header class="dashboard-header">
+        <h1 class="display-4">
+            <i class="fas fa-user-shield text-primary me-2"></i> Admin Panel
+        </h1>
+        <p class="lead text-muted">FloraMind Admin Kontrol Sistemi</p>
+    </header>
 
-    <a asp-controller="Plant" asp-action="Index" id="plant-management" class="action-card">
-        <div class="card-overlay">
-            <i class="fas fa-seedling fa-3x mb-2"></i> <h2 class="card-title">🌿 Bitki Kataloğu Yönetimi</h2>
-            <p>Katalog bitkilerini listele, ekle, düzenle ve sil.</p>
+    <div class="row justify-content-center">
+
+        @* 1. Kullanıcı Yönetimi Kartı *@
+        <div class="col-xl-4 col-lg-4 col-md-6 mb-4">
+            <a asp-controller="Admin" asp-action="UserList" class="action-card bg-custom-primary text-white">
+                <i class="fas fa-users action-icon"></i>
+                <div class="action-title">Kullanıcı Yönetimi</div>
+                <p class="text-white-50 mb-0">Kullanıcı rollerini, yetkilerini ve hesap güvenliğini yönetin.</p>
+            </a>
         </div>
-    </a>
 
-    <a asp-controller="Content" asp-action="Index" id="content-management" class="action-card">
-        <div class="card-overlay">
-            <i class="fas fa-file-alt fa-3x mb-2"></i> <h2 class="card-title">📝 İçerik Yönetimi</h2>
-            <p>Bitkilere ait makale ve açıklamaların listesi.</p>
+        @* 2. Bitki Kataloğu Yönetimi Kartı *@
+        <div class="col-xl-4 col-lg-4 col-md-6 mb-4">
+            <a asp-controller="Plant" asp-action="Index" class="action-card bg-custom-success text-white">
+                <i class="fas fa-tree action-icon"></i>
+                <div class="action-title">Bitki Yönetimi</div>
+                <p class="text-white-50 mb-0">FloraMind kataloğuna yeni bitkiler ekleyin ve mevcut kayıtları güncelleyin.</p>
+            </a>
         </div>
-    </a>
+
+        @* 3. İçerik Yönetimi ve Ekleme Kartı *@
+        <div class="col-xl-4 col-lg-4 col-md-6 mb-4">
+            <a asp-controller="Content" asp-action="Index" class="action-card bg-custom-warning text-white">
+                <i class="fas fa-newspaper action-icon"></i>
+                <div class="action-title">İçerik Yönetimi</div>
+                <p class="text-white-50 mb-0">Katalogdaki mevcut bitkilerin içeriklerini yönetin.</p>
+            </a>
+        </div>
+
+    </div>
 
 </div>
-
-<p class="mt-4 text-muted">Hızlı erişim ve yönetim için yukarıdaki kutucukları kullanın.</p>

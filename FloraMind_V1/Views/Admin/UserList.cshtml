@@ -1,0 +1,171 @@
+﻿@model IEnumerable<FloraMind_V1.Models.User>
+
+@{
+    ViewData["Title"] = "Kullanıcı Yönetimi Paneli";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Tüm Kayıtlı Kullanıcılar</h6>
+            </div>
+            <div class="card-body">
+
+                
+                @if (TempData["SuccessMessage"] != null)
+                {
+                    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+                }
+                @if (TempData["ErrorMessage"] != null)
+                {
+                    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+                }
+
+                
+                <div class="mb-4">
+                    <form asp-controller="Admin" asp-action="UserList" method="get">
+                        <div class="input-group">
+                            <input type="text"
+                                   name="searchString"
+                                   class="form-control bg-light border-0 small"
+                                   placeholder="Kullanıcı Adı veya ID ile Ara..."
+                                   aria-label="Search"
+                                   value="@ViewData["CurrentFilter"]">
+
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="submit">
+                                    <i class="fas fa-search fa-sm">Ara</i>
+                                </button>
+                                <a asp-controller="Admin" asp-action="UserList" class="btn btn-secondary ml-2">
+                                    <i class="fas fa-redo">Temizle</i>
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                
+                <table class="table table-bordered table-striped" id="userTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>                 
+                            <th>Kullanıcı Adı</th>      
+                            <th>Mevcut Rol</th>         
+                            <th style="width: 150px;">Son Giriş Tarihi</th> 
+                            <th>Durum</th>              
+                            <th style="width: 150px;">Kayıt Tarihi</th>     
+                            <th style="width: 180px;">Yetki Yükseltme</th>  
+                            <th>Yasaklama</th>          
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var user in Model)
+                        {
+                            
+                            @if (user == null) { continue; }
+
+                            <tr>
+                                @* 1. ID *@
+                                <td>@user.UserID</td>
+
+                                @* 2. Kullanıcı Adı *@
+                                <td>@user.Name</td>
+
+                                @* 3. Mevcut Rol *@
+                                <td>
+                                    @{
+                                        
+                                        string userRole = user.Role ?? "User";
+                                        var roleClass = userRole == "Admin" ? "badge bg-danger" : "badge bg-primary";
+                                    }
+                                    <span class="@roleClass">@userRole</span>
+                                </td>
+
+                                @* 4. Son Giriş Tarihi *@
+                                <td>
+                                    @if (user.LastLoginDate.HasValue)
+                                    {
+                                        @user.LastLoginDate.Value.ToString("dd.MM.yyyy HH:mm")
+                                    }
+                                    else
+                                    {
+                                        <span>Hiç Giriş Yapmadı</span>
+                                    }
+                                </td>
+
+                                @* 5. Durum (Yasaklı/Aktif) *@
+                                <td>
+                                    @{
+                                        var statusClass = user.IsBanned ? "badge bg-danger" : "badge bg-success";
+                                        var statusText = user.IsBanned ? "YASAKLI" : "Aktif";
+                                    }
+                                    <span class="@statusClass">@statusText</span>
+                                </td>
+
+                                @* 6. Kayıt Tarihi *@
+                                <td>@user.RegistrationDate.ToString("dd.MM.yyyy")</td>
+
+                                @* 7. Yetki Yükseltme *@
+                                <td>
+                                    @if (user.Role == "User")
+                                    {
+                                        <form asp-controller="Admin" asp-action="PromoteToAdmin"
+                                              asp-route-id="@user.UserID" method="post">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="btn btn-warning btn-sm w-100"
+                                                    onclick="return confirm('@user.Name adlı kullanıcıyı Admin olarak atamak istediğinizden emin misiniz?');">
+                                                Adminliğe Yükselt
+                                            </button>
+                                        </form>
+                                    }
+                                    else
+                                    {
+                                        <button class="btn btn-secondary btn-sm w-100" disabled>Zaten Admin</button>
+                                    }
+                                </td>
+
+                                @* 8. Yasaklama Butonu Mantığı *@
+                                <td>
+                                    @{
+                                        var currentUserId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+                                    }
+
+                                    @* Başka Admini veya kendini yasaklamayı engelle *@
+                                    @if (user.Role == "Admin" || user.UserID.ToString() == currentUserId)
+                                    {
+                                        <button class="btn btn-secondary btn-sm w-100" disabled>Kilitli İşlem</button>
+                                    }
+                                    else
+                                    {
+                                        @* Yasağı Kaldır Butonu *@
+                                        @if (user.IsBanned)
+                                        {
+                                            <form asp-controller="Admin" asp-action="ToggleBan"
+                                                  asp-route-id="@user.UserID" asp-route-banStatus="false" method="post">
+                                                @Html.AntiForgeryToken()
+                                                <button type="submit" class="btn btn-success btn-sm w-100">Yasağı Kaldır</button>
+                                            </form>
+                                        }
+                                        @* Yasakla Butonu *@
+                                        else
+                                        {
+                                            <form asp-controller="Admin" asp-action="ToggleBan"
+                                                  asp-route-id="@user.UserID" asp-route-banStatus="true" method="post">
+                                                @Html.AntiForgeryToken()
+                                                <button type="submit" class="btn btn-danger btn-sm w-100"
+                                                        onclick="return confirm('@user.Name adlı kullanıcıyı yasaklamak istediğinizden emin misiniz?');">
+                                                    Hesabı Yasakla
+                                                </button>
+                                            </form>
+                                        }
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

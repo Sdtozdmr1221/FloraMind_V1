@@ -17,10 +17,17 @@ namespace FloraMind_V1.Models
         [MaxLength(100)]
         public string Email { get; set; } // email
 
+        public DateTime RegistrationDate { get; set; }
+
+        public DateTime? LastLoginDate { get; set; }
+
         [Required]
         [MaxLength(100)]
         public string PasswordHash { get; set; } // şifre hash'i
 
+        public string Role { get; set; } // kullanıcı rolü
+
+        public bool IsBanned { get; set; } // ban durumu
 
 
         //ilişkiler

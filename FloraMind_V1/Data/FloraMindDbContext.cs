@@ -64,10 +64,43 @@ namespace FloraMind_V1.Data
             modelBuilder.Entity<UserPlant>()
                 .HasOne(up => up.Plant)
                 
-                .WithMany(p => p.UserPlants) // Plant modelinde bu koleksiyonun var olduğunu varsayıyoruz
+                .WithMany(p => p.UserPlants) 
                 .HasForeignKey(up => up.PlantID)
-                .OnDelete(DeleteBehavior.Restrict); // Katalogdaki bitki silinirken, kullanıcıların koleksiyon kayıtları korunur.
+                .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<User>(entity =>
+            {
+                // Varsayılan Değer Atama
+                entity.Property(e => e.Role)
+                      .HasDefaultValue("User");
+
+                entity.Property(e => e.Role)
+                      .HasMaxLength(50);
+
+                entity.Property(e => e.Role)
+                      .IsRequired();
+            });
+
+            modelBuilder.Entity<User>(entity =>
+            {
+                // RegistrationDate için varsayılan değeri SQL server'ın atamasını sağlar
+                
+                entity.Property(e => e.RegistrationDate)
+                      .HasDefaultValueSql("GETDATE()"); 
+            });
+
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.Property(e => e.LastLoginDate)
+                      .IsRequired(false); 
+            });
+
+            modelBuilder.Entity<User>(entity =>
+            {
+                
+                entity.Property(e => e.IsBanned)
+                      .HasDefaultValue(false); 
+            });
         }
     }
 }

@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using FloraMind_V1.Data;
 using FloraMind_V1.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FloraMind_V1.Controllers
 {
+    
     public class PlantController : Controller
     {
         private readonly FloraMindDbContext _context;
