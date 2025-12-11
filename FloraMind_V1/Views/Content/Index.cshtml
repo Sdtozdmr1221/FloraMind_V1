@@ -2,38 +2,52 @@
 
 @{
     ViewData["Title"] = "İçerik Yönetimi";
-    
 }
 
-<h1>📝 Tüm İçerikler</h1>
+<h1>Tüm İçerikler</h1>
 <p>
+
+    <a asp-area="" asp-controller="Admin" asp-action="Index" class="btn btn-primary">
+        ← Admin Paneli
+    </a>
+
     <a asp-action="Create" class="btn btn-primary">Yeni İçerik Ekle</a>
+
 </p>
 
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>@Html.DisplayNameFor(model => model.Title)</th>
-            <th>@Html.DisplayNameFor(model => model.Body)</th>
-            <th>İlgili Bitki</th>
-            <th>Ekleyen Kullanıcı</th>
-            <th>İşlemler</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+
+
+@if (!Model.Any())
+{
+    <p>Henüz içerik eklenmemiş.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
             <tr>
-                <td>@Html.DisplayFor(modelItem => item.Title)</td>
-                <td>@(item.Body.Length > 50 ? item.Body.Substring(0, 50) + "..." : item.Body)</td>
-                <td>@Html.DisplayFor(modelItem => item.Plant.Name)</td>
-                <td>@Html.DisplayFor(modelItem => item.User.Name)</td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.ContentID" class="btn btn-sm btn-info">Düzenle</a> |
-                    <a asp-action="Details" asp-route-id="@item.ContentID" class="btn btn-sm btn-secondary">Detay</a> |
-                    <a asp-action="Delete" asp-route-id="@item.ContentID" class="btn btn-sm btn-danger">Sil</a>
-                </td>
+                <th>Başlık</th>
+                <th>İçerik</th>
+                <th>İlgili Bitki</th>
+                <th>Ekleyen Kullanıcı</th>
+                <th>İşlemler</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.Title)</td>
+                    <td>@(item.Body.Length > 50 ? item.Body.Substring(0, 50) + "..." : item.Body)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Plant.Name)</td>
+                    <td>@Html.DisplayFor(modelItem => item.User.Name)</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.ContentID" class="btn btn-sm btn-warning">Düzenle</a> |
+                        <a asp-action="Details" asp-route-id="@item.ContentID" class="btn btn-sm btn-secondary">Detay</a> |
+                        <a asp-action="Delete" asp-route-id="@item.ContentID" class="btn btn-sm btn-danger">Sil</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

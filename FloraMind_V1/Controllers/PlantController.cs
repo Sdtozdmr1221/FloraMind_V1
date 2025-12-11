@@ -26,8 +26,7 @@ namespace FloraMind_V1.Controllers
             return View(await floraMindDbContext.ToListAsync());
         }
 
-        // GET: Plant/Details/5
-        // Controllers/PlantsController.cs içinde
+       
 
         public async Task<IActionResult> Details(int? id)
         {
@@ -37,7 +36,7 @@ namespace FloraMind_V1.Controllers
             }
 
             var plant = await _context.Plants
-                // Artık bu kod, Content koleksiyonu tanımlı olduğu için doğru çalışır.
+                
                 .Include(p => p.Contents)
                 .FirstOrDefaultAsync(m => m.PlantID == id);
 
@@ -49,15 +48,14 @@ namespace FloraMind_V1.Controllers
             return View(plant);
         }
 
-        // GET: Plant/Create
+        
         public IActionResult Create()
         {
             
             return View();
         }
 
-        // POST: Plant/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -75,7 +73,7 @@ namespace FloraMind_V1.Controllers
             return View(plant);
         }
 
-        // GET: Plant/Edit/5
+        
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -92,9 +90,8 @@ namespace FloraMind_V1.Controllers
             return View(plant);
         }
 
-        // POST: Plant/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("PlantID,Name,Species,DateAdded,UserID")] Plant plant)

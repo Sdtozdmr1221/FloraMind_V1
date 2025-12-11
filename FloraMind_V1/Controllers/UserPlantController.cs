@@ -21,38 +21,33 @@ namespace FloraMind_V1.Controllers
             _context = context;
         }
 
-        // Güvenli UserID Çözümleyicisi (Identity sistemi kurulduğunda 'return 1' kaldırılmalıdır!)
+        
         private int GetLoggedInUserId()
         {
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (userIdClaim != null && int.TryParse(userIdClaim, out int userId))
             {
-                return userId; // Oturum açmış kullanıcının gerçek ID'si
+                return userId; 
             }
 
-            // DİKKAT: Gerçek uygulamada burası fırlatmalı veya giriş sayfasına yönlendirmeli.
-            // Test için sabit ID kullanılıyorsa:
+           
             return 1;
         }
 
-        // --------------------------------------------------------
-        // 1. Index: Kullanıcının Koleksiyonunu Görüntüleme
-        // --------------------------------------------------------
+    
         public async Task<IActionResult> Index()
         {
             var userId = GetLoggedInUserId();
 
             var userPlants = await _context.UserPlants
                                            .Where(up => up.UserID == userId)
-                                           .Include(up => up.Plant) // Katalog bitkisi detaylarını yükler
+                                           .Include(up => up.Plant) 
                                            .ToListAsync();
 
             return View(userPlants);
         }
 
-        // --------------------------------------------------------
-        // 2. Add: Katalogdan Bitkiyi Koleksiyona Ekleme
-        // --------------------------------------------------------
+     
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(int plantId)
@@ -65,7 +60,7 @@ namespace FloraMind_V1.Controllers
                 return NotFound("Katalogda bu ID'ye sahip bir bitki bulunamadı.");
             }
 
-            // Çift kaydı önleme kontrolü (İsteğe bağlı, ancak iyi bir pratik)
+            
             var existingUserPlant = await _context.UserPlants
                                                   .AnyAsync(up => up.UserID == userId && up.PlantID == plantId);
             if (existingUserPlant)
@@ -74,7 +69,7 @@ namespace FloraMind_V1.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            // Yeni UserPlant kaydını oluşturma (Artık property'ler doğru çalışacak)
+            
             var newUserPlant = new UserPlant
             {
                 UserID = userId,
@@ -90,30 +85,25 @@ namespace FloraMind_V1.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // --------------------------------------------------------
-        // 3. Water: Bitkiyi Sulama İşlevi (Optimize Edilmiş)
-        // --------------------------------------------------------
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Water(int userPlantId)
         {
             var userId = GetLoggedInUserId();
 
-            // OPTİMİZASYON: Tek sorguda kaydı bulur ve kullanıcının aitliğini doğrular.
+          
             var userPlant = await _context.UserPlants
                 .FirstOrDefaultAsync(up => up.UserPlantID == userPlantId && up.UserID == userId);
 
             if (userPlant == null)
             {
-                // Kayıt bulunamadı VEYA kayıt bu kullanıcıya ait değil.
                 return NotFound("Sulama işlemi için uygun bir bitki kaydı bulunamadı.");
             }
 
             // LastWatered alanını güncelle
             userPlant.LastWatered = DateTime.UtcNow;
 
-            // Context, userPlant objesinin takibini yaptığı için Update gerekmez, 
-            // ancak açıkça kullanmak da hata değildir. SaveChanges yeterlidir.
+            
             await _context.SaveChangesAsync();
 
             TempData["Message"] = "Bitkiniz başarıyla sulandı!";

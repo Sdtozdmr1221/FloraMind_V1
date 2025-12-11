@@ -2,21 +2,20 @@
 
 @{
     ViewData["Title"] = "Admin Gösterge Paneli";
-    // Eğer oluşturduysanız, ortak Admin layout'unuzu kullanın.
-    // Layout = "_AdminLayout";
+    
 }
 
 <style>
     /* Yönetim Kutucukları İçin Stil */
     .dashboard-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Yan yana iki kutucuk */
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
         gap: 30px;
         margin-top: 30px;
     }
 
     .action-card {
-        display: block; /* A tagini tam kartı kaplayacak şekilde yapar */
+        display: block; 
         height: 200px;
         border-radius: 15px;
         background-size: cover;
@@ -30,7 +29,7 @@
     }
 
     .action-card:hover {
-        transform: translateY(-5px); /* Hafif yukarı kalkma efekti */
+        transform: translateY(-5px); 
         box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
     }
 
@@ -40,7 +39,7 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background: rgba(0, 0, 0, 0.55); /* Yarı şeffaf koyu katman */
+        background: rgba(0, 0, 0, 0.55); 
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -55,7 +54,7 @@
         margin: 0;
     }
 
-    /* Arka Plan Resimleri: wwwroot/images klasöründe bu isimlerde resim olmalı */
+    
     #plant-management {
         background-image: url('/images/bg-plant-manage.jpg');
     }

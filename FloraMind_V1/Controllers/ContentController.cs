@@ -7,12 +7,11 @@ using Microsoft.EntityFrameworkCore;
 using FloraMind_V1.Data;
 using FloraMind_V1.Models;
 using Microsoft.AspNetCore.Authorization;
-using System.Security.Claims; // User ID almak için
+using System.Security.Claims;
 
 namespace FloraMind_V1.Controllers
 {
-    // Yalnızca 'Admin' rolüne sahip kullanıcıların erişimine izin verir.
-    //[Authorize(Roles = "Admin")]
+    
     public class ContentController : Controller
     {
         private readonly FloraMindDbContext _context;
@@ -22,7 +21,7 @@ namespace FloraMind_V1.Controllers
             _context = context;
         }
 
-        // Oturum açmış kullanıcının ID'sini (Admin) alır.
+      
         private int GetLoggedInUserId()
         {
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -30,15 +29,15 @@ namespace FloraMind_V1.Controllers
             {
                 return userId;
             }
-            // Identity sistemi kuruluysa bu durum genelde olmaz. Test amaçlı varsayım kaldırıldı.
+            
             throw new UnauthorizedAccessException("Oturum açmış kullanıcı ID'si bulunamadı veya geçerli değil.");
         }
 
 
-        // GET: Content (Tüm içerikleri listele)
+      
         public async Task<IActionResult> Index()
         {
-            // İlgili Plant ve User verilerini Eager Loading ile yükle
+           
             var contents = await _context.Contents
                 .Include(c => c.Plant)
                 .Include(c => c.User)
@@ -47,7 +46,7 @@ namespace FloraMind_V1.Controllers
             return View(contents);
         }
 
-        // GET: Content/Details/5
+        
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -68,37 +67,53 @@ namespace FloraMind_V1.Controllers
             return View(content);
         }
 
-        // GET: Content/Create
+       
         public async Task<IActionResult> Create()
         {
-            // Sadece Plant listesi View'a gönderilir (UserID Admin tarafından otomatik atanacak)
-            ViewData["PlantID"] = new SelectList(await _context.Plants.ToListAsync(), "PlantID", "Name");
+            
+            ViewBag.PlantID = new SelectList(await _context.Plants.ToListAsync(), "PlantID", "Name");
             return View();
         }
 
-        // POST: Content/Create
+       
         [HttpPost]
         [ValidateAntiForgeryToken]
-        // Sadece Title, Body ve PlantID alınır. ContentID, UserID, DateCreated Bind'den çıkarıldı.
         public async Task<IActionResult> Create([Bind("Title,Body,PlantID")] Content content)
         {
+           
+            content.UserID = 1; 
+
+            ModelState.Remove("UserID");
+            ModelState.Remove("User"); 
+
+            
+            if (content.PlantID <= 0)
+            {
+                ModelState.AddModelError("PlantID", "Lütfen bir bitki seçiniz.");
+            }
+            else
+            {
+                
+                ModelState.Remove("PlantID");
+                ModelState.Remove("Plant");
+            }
+
+            
             if (ModelState.IsValid)
             {
-                // Güvenlik ve Tutarlılık İçin Atamalar
-                content.UserID = 1;
-                ModelState.Remove("UserID");
                 content.DateCreated = DateTime.UtcNow;
-                _context.Add(content);
+                _context.Contents.Add(content);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
 
-            // Hata varsa listeyi tekrar yükle
-            ViewData["PlantID"] = new SelectList(await _context.Plants.ToListAsync(), "PlantID", "Name", content.PlantID);
+            // Hata varsa dropdown'ı tekrar doldur
+            ViewBag.PlantID = new SelectList(await _context.Plants.ToListAsync(), "PlantID", "Name", content.PlantID);
             return View(content);
         }
 
-        // GET: Content/Edit/5
+
+        
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -116,48 +131,41 @@ namespace FloraMind_V1.Controllers
             return View(content);
         }
 
-        // POST: Content/Edit/5
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        // Sadece Title, Body ve PlantID alınır. UserID ve DateCreated Bind'den çıkarıldı.
-        public async Task<IActionResult> Edit(int id, [Bind("ContentID,Title,Body,PlantID")] Content content)
+        public async Task<IActionResult> Edit(int id, [Bind("ContentID,Title,Body,PlantID,UserID,DateCreated")] Content content)
         {
             if (id != content.ContentID)
             {
                 return NotFound();
             }
 
+            // UserID ve PlantID hatalarını manuel olarak temizlenmesi
+            ModelState.Remove("UserID");
+            ModelState.Remove("User");
+            ModelState.Remove("PlantID");
+            ModelState.Remove("Plant");
+
             if (ModelState.IsValid)
             {
-                // Güncellenmeyecek alanları (UserID, DateCreated) korumak için
-                var contentToUpdate = await _context.Contents.AsNoTracking().FirstOrDefaultAsync(c => c.ContentID == id);
-
-                if (contentToUpdate == null) return NotFound();
-
-                // View'dan gelmeyen ancak korumamız gereken değerleri ata
-                content.UserID = contentToUpdate.UserID;
-                content.DateCreated = contentToUpdate.DateCreated;
-
                 try
                 {
-                    _context.Update(content);
+                    _context.Update(content); 
                     await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!ContentExists(content.ContentID))
-                    {
                         return NotFound();
-                    }
                     else
-                    {
                         throw;
-                    }
                 }
-                return RedirectToAction(nameof(Index));
             }
-            // Hata varsa listeyi tekrar yükle
-            ViewData["PlantID"] = new SelectList(await _context.Plants.ToListAsync(), "PlantID", "Name", content.PlantID);
+
+            // Hata olursa dropdown tekrar dolsun
+            ViewBag.PlantID = new SelectList(await _context.Plants.ToListAsync(), "PlantID", "Name", content.PlantID);
             return View(content);
         }
 

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace FloraMind_V1.Models
 {
     
-    public class Content  //İçerik Sınıfı
+    public class Content  //İçerik Modeli
     {
 
         [Key]

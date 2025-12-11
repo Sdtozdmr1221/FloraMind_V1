@@ -6,7 +6,12 @@
 
 <h1>🌿 Bitki Kataloğu</h1>
 <p>
+    <a asp-area="" asp-controller="Admin" asp-action="Index" class="btn btn-primary">
+        ← Admin Paneli
+    </a>
+
     <a asp-action="Create" class="btn btn-primary">Yeni Katalog Bitkisi Ekle</a>
+
 </p>
 
 <table class="table table-striped">
@@ -30,10 +35,7 @@
                     <a asp-action="Details" asp-route-id="@item.PlantID" class="btn btn-sm btn-secondary">Detaylar</a> |
                     <a asp-action="Delete" asp-route-id="@item.PlantID" class="btn btn-sm btn-danger">Sil</a>
 
-                    @* <form asp-controller="UserPlants" asp-action="Add" method="post" class="d-inline">
-                        <input type="hidden" name="plantId" value="@item.PlantID" />
-                        <button type="submit" class="btn btn-sm btn-success">+ Koleksiyona Ekle</button>
-                    </form> *@
+                 
                 </td>
             </tr>
         }

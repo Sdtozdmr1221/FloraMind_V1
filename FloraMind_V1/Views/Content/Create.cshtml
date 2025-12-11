@@ -2,39 +2,52 @@
 
 @{
     ViewData["Title"] = "Yeni İçerik Ekle";
-  
 }
 
-<h2>Yeni İçerik Ekle</h2>
+<h2 class="mb-4">Yeni İçerik Ekle</h2>
 <hr />
 
 <div class="row">
     <div class="col-md-8">
         <form asp-action="Create" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            
+            <div asp-validation-summary="All" class="text-danger mb-4 fw-bold"></div>
 
-            <div class="form-group mb-3">
-                <label asp-for="PlantID">İçeriğin Ait Olduğu Bitki</label>
-                <select asp-for="PlantID" class="form-control" asp-items="ViewBag.PlantID">
-                    <option value="">-- Bitki Seçiniz --</option>
+            <div class="mb-3">
+                <label asp-for="PlantID" class="form-label">
+                    İçeriğin Ait Olduğu Bitki <span class="text-danger">*</span>
+                </label>
+                <select asp-for="PlantID" class="form-select" asp-items="ViewBag.PlantID">
+                    
                 </select>
                 <span asp-validation-for="PlantID" class="text-danger"></span>
             </div>
 
-            <div class="form-group mb-3">
-                <label asp-for="Title">İçerik Başlığı</label>
-                <input asp-for="Title" class="form-control" />
+            <div class="mb-3">
+                <label asp-for="Title" class="form-label">
+                    İçerik Başlığı <span class="text-danger">*</span>
+                </label>
+                <input asp-for="Title" class="form-control" placeholder="Ör: Aloe Vera Bakımı" />
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
 
-            <div class="form-group mb-4">
-                <label asp-for="Body">İçerik Metni</label>
-                <textarea asp-for="Body" class="form-control" rows="8"></textarea>
+            <div class="mb-4">
+                <label asp-for="Body" class="form-label">
+                    İçerik Metni <span class="text-danger">*</span>
+                </label>
+                <textarea asp-for="Body" class="form-control" rows="12"
+                          placeholder="Bitki hakkında detaylı bilgi, bakım ipuçları vs. yazınız..."></textarea>
                 <span asp-validation-for="Body" class="text-danger"></span>
             </div>
 
-            <button type="submit" class="btn btn-success">İçeriği Kaydet</button>
-            <a asp-action="Index" class="btn btn-secondary">İptal</a>
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-success btn-lg">
+                    Kaydet
+                </button>
+                <a asp-action="Index" class="btn btn-secondary btn-lg">
+                    İptal
+                </a>
+            </div>
         </form>
     </div>
 </div>

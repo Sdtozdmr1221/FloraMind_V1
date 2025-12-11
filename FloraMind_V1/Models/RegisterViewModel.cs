@@ -6,19 +6,19 @@ namespace FloraMind_V1.Models
     public class RegisterViewModel // kayıt ol
     {
         [Required]
-        public string UserName { get; set; }
+        public string UserName { get; set; } // kullanıcı adı
 
 
         [Required]
-        public string Email { get; set; }
+        public string Email { get; set; } // email
 
 
         [Required]
-        public string Password { get; set; }
+        public string Password { get; set; } // şifre
 
         [Required]
         [DataType(DataType.Password)]
-        [Compare("Password",ErrorMessage ="Şifreler Uyuşmuyor!")] // şifre kontrol
-        public string CheckPassword { get; set; }
+        [Compare("Password",ErrorMessage ="Şifreler Uyuşmuyor!")]
+        public string CheckPassword { get; set; } // şifre kontrol
     }
 }

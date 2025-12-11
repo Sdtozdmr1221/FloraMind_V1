@@ -5,15 +5,15 @@ using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 namespace FloraMind_V1.Models
 {
     
-    public class Plant  //Bitki Sınıfı
+    public class Plant  //Bitki Modeli
     {
         [Key]
-        public int PlantID { get; set; }
+        public int PlantID { get; set; } //Bitki ID'si
 
 
         [Required]
         [MaxLength(100)]
-        public string Name { get; set; }
+        public string Name { get; set; } //Bitki Adı
 
 
         [MaxLength(100)]

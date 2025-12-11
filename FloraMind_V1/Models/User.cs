@@ -7,15 +7,15 @@ namespace FloraMind_V1.Models
 
     {
         [Key]
-        public int UserID { get; set; }
+        public int UserID { get; set; } // kullanıcı ID'si
 
         [Required]
         [MaxLength(50)]
-        public string Name { get; set; }
+        public string Name { get; set; } // isim
 
         [Required]
         [MaxLength(100)]
-        public string Email { get; set; }
+        public string Email { get; set; } // email
 
         [Required]
         [MaxLength(100)]
@@ -26,9 +26,9 @@ namespace FloraMind_V1.Models
         //ilişkiler
 
         [ValidateNever]
-        public ICollection<UserPlant> UserPlants { get; set; }
-        public ICollection<Plant> Plants { get; set; }
-        public ICollection<Content> Contents { get; set; }
+        public ICollection<UserPlant> UserPlants { get; set; } // kullanıcı-bitki ilişkisi
+        public ICollection<Plant> Plants { get; set; } // kullanıcı bitkileri
+        public ICollection<Content> Contents { get; set; } // kullanıcı içerikleri
 
 
 
