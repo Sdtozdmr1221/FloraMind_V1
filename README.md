@@ -1,11 +1,11 @@
 # FloraMind_V1
 
 
-### Basic System Configuration
-- Added data models for user, plant and content classes.
-- All connection and communication traffic with the database is managed by Data/FloraMindDbContext class.
-- The migration process was completed successfully.
-- Added AccountController for Login and Register.
+### Overview
+Plant and flower cultivation is experiencing a massive surge in interest, both in homes and professional nurseries. Modern users are looking beyond simple care reminders; they demand a holistic, digitally-assisted platform to track their plants' growth and joyfully acquire knowledge.
+
+FloraMind steps in as your intelligent, all-in-one digital assistant designed to meet this need. We provide a comprehensive solution for tracking, learning, and nurturing your green companions.
+
 
 
 ### Project Status : In Development
