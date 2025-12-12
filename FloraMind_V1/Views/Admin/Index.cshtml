@@ -1,0 +1,108 @@
+﻿@* views/admin/index.cshtml *@
+
+@{
+    ViewData["Title"] = "Admin Kontrol Paneli";
+}
+
+<style>
+    /* Yönetim Merkezi için özel stil ayarları */
+    .dashboard-header {
+        border-bottom: 2px solid #e0e0e0;
+        padding-bottom: 15px;
+        margin-bottom: 30px;
+    }
+
+    /* Aksiyon Kartları (Kısayollar) */
+    .action-card {
+        display: flex; /* İçeriğin esnek kutu olmasını sağlar */
+        flex-direction: column; /* İçeriği dikey sıralar */
+        justify-content: center; /* İçeriği dikeyde ortalar */
+        align-items: center; /* İçeriği yatayda ortalar */
+
+        padding: 25px;
+        border-radius: 8px;
+        transition: transform 0.2s, box-shadow 0.2s;
+        text-decoration: none;
+        color: inherit;
+        min-height: 200px;
+        height: 100%; 
+
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+        .action-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+    .action-icon {
+        font-size: 3.5rem;
+        margin-bottom: 10px;
+    }
+
+    .action-title {
+        font-weight: 700;
+        font-size: 1.5rem;
+        margin-top: 10px;
+        margin-bottom: 5px;
+    }
+
+    /* Kart Renkleri */
+    .bg-custom-primary {
+        background-color: #4e73df !important;
+        color: white !important;
+    }
+
+    .bg-custom-success {
+        background-color: #1cc88a !important;
+        color: white !important;
+    }
+
+    .bg-custom-warning {
+        background-color: #f6c23e !important;
+        color: white !important;
+    }
+</style>
+
+<div class="container-fluid">
+
+    <header class="dashboard-header">
+        <h1 class="display-4">
+            <i class="fas fa-user-shield text-primary me-2"></i> Admin Panel
+        </h1>
+        <p class="lead text-muted">FloraMind Admin Kontrol Sistemi</p>
+    </header>
+
+    <div class="row justify-content-center">
+
+        @* 1. Kullanıcı Yönetimi Kartı *@
+        <div class="col-xl-4 col-lg-4 col-md-6 mb-4">
+            <a asp-controller="Admin" asp-action="UserList" class="action-card bg-custom-primary text-white">
+                <i class="fas fa-users action-icon"></i>
+                <div class="action-title">Kullanıcı Yönetimi</div>
+                <p class="text-white-50 mb-0">Kullanıcı rollerini, yetkilerini ve hesap güvenliğini yönetin.</p>
+            </a>
+        </div>
+
+        @* 2. Bitki Kataloğu Yönetimi Kartı *@
+        <div class="col-xl-4 col-lg-4 col-md-6 mb-4">
+            <a asp-controller="Plant" asp-action="Index" class="action-card bg-custom-success text-white">
+                <i class="fas fa-tree action-icon"></i>
+                <div class="action-title">Bitki Yönetimi</div>
+                <p class="text-white-50 mb-0">FloraMind kataloğuna yeni bitkiler ekleyin ve mevcut kayıtları güncelleyin.</p>
+            </a>
+        </div>
+
+        @* 3. İçerik Yönetimi ve Ekleme Kartı *@
+        <div class="col-xl-4 col-lg-4 col-md-6 mb-4">
+            <a asp-controller="Content" asp-action="Index" class="action-card bg-custom-warning text-white">
+                <i class="fas fa-newspaper action-icon"></i>
+                <div class="action-title">İçerik Yönetimi</div>
+                <p class="text-white-50 mb-0">Katalogdaki mevcut bitkilerin içeriklerini yönetin.</p>
+            </a>
+        </div>
+
+    </div>
+
+</div>

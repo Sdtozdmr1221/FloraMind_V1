@@ -1,0 +1,39 @@
+﻿@model FloraMind_V1.Models.Plant
+
+@{
+    ViewData["Title"] = "Bitki Detayları";
+}
+
+<h2>Bitki Detayları: @Model.Name</h2>
+<hr />
+
+<div>
+    <dl class="row">
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Name)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.Name)</dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Species)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.Species)</dd>
+
+        <dt class="col-sm-2">Eklenme Tarihi</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.DateAdded)</dd>
+
+        <dt class="col-sm-2">Kime Ait?</dt>
+        <dd class="col-sm-10">
+            @if (Model.UserID.HasValue)
+            {
+                @Model.User.Name
+            }
+            else
+            {
+                
+                <span>Katalog Bitkisi (Kimseye Ait Değil)</span>
+            }
+        </dd>
+    </dl>
+</div>
+
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.PlantID" class="btn btn-info">Düzenle</a> |
+    <a asp-action="Index">Katalog Listesine Geri Dön</a>
+</div>

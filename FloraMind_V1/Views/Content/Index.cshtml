@@ -1,0 +1,53 @@
+﻿@model IEnumerable<FloraMind_V1.Models.Content>
+
+@{
+    ViewData["Title"] = "İçerik Yönetimi";
+}
+
+<h1>Tüm İçerikler</h1>
+<p>
+
+    <a asp-area="" asp-controller="Admin" asp-action="Index" class="btn btn-primary">
+        ← Admin Paneli
+    </a>
+
+    <a asp-action="Create" class="btn btn-primary">Yeni İçerik Ekle</a>
+
+</p>
+
+
+
+@if (!Model.Any())
+{
+    <p>Henüz içerik eklenmemiş.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Başlık</th>
+                <th>İçerik</th>
+                <th>İlgili Bitki</th>
+                <th>Ekleyen Kullanıcı</th>
+                <th>İşlemler</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.Title)</td>
+                    <td>@(item.Body.Length > 50 ? item.Body.Substring(0, 50) + "..." : item.Body)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Plant.Name)</td>
+                    <td>@Html.DisplayFor(modelItem => item.User.Name)</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.ContentID" class="btn btn-sm btn-warning">Düzenle</a> |
+                        <a asp-action="Details" asp-route-id="@item.ContentID" class="btn btn-sm btn-secondary">Detay</a> |
+                        <a asp-action="Delete" asp-route-id="@item.ContentID" class="btn btn-sm btn-danger">Sil</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

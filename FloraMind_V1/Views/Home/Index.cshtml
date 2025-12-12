@@ -2,7 +2,50 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+@section Styles {
+    <link rel="stylesheet" href="~/css/Index.css">
+}
+
+<div class="gallery-container">
+    <div class="image_slider">
+        <div class="slide" style="background-image: url('@Url.Content("~/images/slide1.jpg")');">
+            <div class="slide-text">
+                <h2>Akıllı Takip</h2>
+                <p> Bitkilerinizi yönetin, bakımlarını takip edin</p>
+            </div>
+        </div>
+        <div class="slide" style="background-image: url('@Url.Content("~/images/slide2.jpg")');">
+            <div class="slide-text">
+                <h2>Sulama Takip Sistemi</h2>
+                <p>Bitkilerinizin büyüme sürecini takip edin</p>
+            </div>
+        </div>
+        <div class="slide" style="background-image: url('@Url.Content("~/images/slide3.jpg")');">
+            <div class="slide-text">
+                <h2>Hatırlatma Sistemi</h2>
+                <p>Sulama ve bakım zamanlarını otomatik olarak planlayın.</p>
+            </div>
+        </div>
+        <div class="slide" style="background-image: url('@Url.Content("~/images/slide4.jpg")');">
+            <div class="slide-text">
+                <h2>Bitki Kütüphanesi</h2>
+                <p>Bitkilerinizi kaydedin, bakım geçmişini saklayın</p>
+            </div>
+        </div>
+        <button type="button" id="prev">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <button type="button" id="next">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+        <div class="circles">
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+        </div>
+    </div>
 </div>
+@section Scripts {
+    <script src="~/js/Index.js"></script>
+}

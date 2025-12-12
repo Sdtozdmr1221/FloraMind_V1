@@ -4,6 +4,7 @@ using FloraMind_V1.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FloraMind_V1.Migrations
 {
     [DbContext(typeof(FloraMindDbContext))]
-    partial class FloraMindDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251208095632_FloraMindTestMigration")]
+    partial class FloraMindTestMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -101,14 +104,6 @@ namespace FloraMind_V1.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<bool>("IsBanned")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
-                    b.Property<DateTime?>("LastLoginDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -118,18 +113,6 @@ namespace FloraMind_V1.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
-
-                    b.Property<DateTime>("RegistrationDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETDATE()");
-
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasDefaultValue("User");
 
                     b.HasKey("UserID");
 
@@ -176,7 +159,7 @@ namespace FloraMind_V1.Migrations
                     b.HasOne("FloraMind_V1.Models.User", "User")
                         .WithMany("Contents")
                         .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Plant");
@@ -189,7 +172,7 @@ namespace FloraMind_V1.Migrations
                     b.HasOne("FloraMind_V1.Models.User", "User")
                         .WithMany("Plants")
                         .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("User");
                 });
@@ -199,7 +182,7 @@ namespace FloraMind_V1.Migrations
                     b.HasOne("FloraMind_V1.Models.Plant", "Plant")
                         .WithMany("UserPlants")
                         .HasForeignKey("PlantID")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("FloraMind_V1.Models.User", "User")
