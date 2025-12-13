@@ -1,0 +1,91 @@
+﻿@{
+    ViewData["Title"] = "Çiçekli Bitkiler";
+}
+
+<h2 class="mb-4"> Çiçekli Bitkiler</h2>
+
+<div class="row">
+
+    <!-- SOLDAKİ: BİTKİ LİSTESİ -->
+    <div class="col-md-5">
+        <div class="card shadow-sm">
+            <div class="card-header fw-bold">
+                Bitki Seç
+            </div>
+
+            <table class="table table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th>Bitki</th>
+                        <th>Tür</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    
+                    <tr>
+                        <td>Orkide</td>
+                        <td>Çiçekli</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary">
+                                Seç
+                            </button>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Gül</td>
+                        <td>Çiçekli</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary">
+                                Seç
+                            </button>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Lale</td>
+                        <td>Çiçekli</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary">
+                                Seç
+                            </button>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- SAĞDAKİ: BİTKİ DETAY KARTI -->
+    <div class="col-md-7">
+        <div class="card shadow">
+
+            <img src=""
+                 class="card-img-top"
+                 alt="Bitki Görseli">
+
+            <div class="card-body">
+                <h4 class="card-title">Orkide</h4>
+
+                <p class="card-text">
+                    Aydınlık ortamı sever. Haftada 1 kez sulanmalıdır.
+                    Direkt güneş ışığından kaçınılmalıdır.
+                </p>
+                <!-- BURADA ÖZELİKLER OLACAK -->
+                <ul class="list-group list-group-flush mb-3">
+                    <li class="list-group-item"> Sulama: 7 gün</li>
+                    <li class="list-group-item"> Ortam: Ilık</li>
+                    <li class="list-group-item"> Işık: Dolaylı</li>
+                </ul>
+
+                <button class="btn btn-success w-100">
+                    Bitkilerime Kaydet
+                </button>
+            </div>
+        </div>
+    </div>
+
+</div>

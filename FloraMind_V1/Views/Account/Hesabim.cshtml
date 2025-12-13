@@ -1,0 +1,31 @@
+﻿@{
+    ViewData["Title"] = "Hesap Bilgileri";
+}
+
+<div class="account-container">
+    <h2>Kullanıcı Hesap Bilgileri</h2>
+
+    <form>
+        <div class="info-group">
+            <label>Ad Soyad:</label>
+            <input type="text" value="Kullanıcı Adı" readonly />
+        </div>
+
+        <div class="info-group">
+            <label>E-posta:</label>
+            <input type="email" value="kullanici@mail.com" readonly />
+        </div>
+
+        <div class="info-group">
+            <label>Şifre:</label>
+            <input type="password" value="********" readonly />
+        </div>
+
+        <button type="button" class="btn-update">
+            Bilgileri Güncelle
+        </button>
+    </form>
+</div>
+@section Styles {
+    <link rel="stylesheet" href="~/css/Hesabim.css" />
+}
