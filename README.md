@@ -16,5 +16,5 @@ FloraMind steps in as your intelligent, all-in-one digital assistant designed to
 ![FloraMindLogo](https://github.com/user-attachments/assets/acc17669-159c-492a-8d28-a76fadbd2bdb)
 
 ### UML Diagram :
+<img width="1536" height="1024" alt="FloraMindUMLDiagram" src="https://github.com/user-attachments/assets/a9c73ee9-8f49-4895-9376-e509853dc5aa" />
 
-![UML_FloraMind](https://github.com/user-attachments/assets/c66e7861-f9d4-483f-990d-96aafb408506)
