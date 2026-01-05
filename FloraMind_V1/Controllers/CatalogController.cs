@@ -2,6 +2,9 @@
 using FloraMind_V1.Models;
 using FloraMind_V1.Data;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Threading.Tasks;
+using System;
 
 namespace FloraMind_V1.Controllers
 {
@@ -19,28 +22,42 @@ namespace FloraMind_V1.Controllers
             return View();
         }
 
-        public IActionResult ShowCatalog()
+        // --- ARAMA MOTORU KISMI (ShowCatalog) ---
+        public async Task<IActionResult> ShowCatalog(string searchString)
         {
-            var plants = _context.Plants
+            // 1. Veritabanı sorgusunu hazırla (Henüz veriyi çekme)
+            var plantsQuery = _context.Plants
                   .Include(p => p.Contents)
-                  .ToList();
-            return View(plants);
+                  .AsQueryable();
+
+            // 2. Eğer arama kutusu doluysa filtrele
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                // 'Species' (Tür) sütununda aranan kelimeyi bul
+                plantsQuery = plantsQuery.Where(p => p.Species.Contains(searchString));
+
+                // Aranan kelimeyi kutuda kalsın diye geri gönder
+                ViewData["CurrentFilter"] = searchString;
+            }
+
+            // 3. Sonuçları getir ve View'a gönder
+            var result = await plantsQuery.ToListAsync();
+            return View(result);
         }
 
-                                                                                  // ---  BAŞLANGIÇ ---      
+        // --- DETAY SAYFASI ---
         public IActionResult Details(int id)
         {
-            
             var plant = _context.Plants.FirstOrDefault(p => p.PlantID == id);
 
             if (plant == null)
             {
                 return RedirectToAction("ShowCatalog");
-            }           
+            }
             return View(plant);
         }
-                                                                 /// KATALOG VE BİTKİLEİRM KISMINDAKİ BİTKİ BAĞLANTISI 
 
+        // --- PROFİL DETAYLARI ---
         public async Task<IActionResult> UserProfileDetails(int id)
         {
             var UserDetails = await _context.Users
@@ -56,21 +73,21 @@ namespace FloraMind_V1.Controllers
         [HttpPost]
         public async Task<IActionResult> AddToMyPlants(int id)
         {
-            // 1. Katalogdan bitkiyi bul
+            // Katalogdan bitkiyi bul
             var catalogPlant = await _context.Plants.FindAsync(id);
             if (catalogPlant == null)
             {
                 return NotFound();
             }
 
-            // 2. Mevcut kullanıcının ID'sini al
+            //Mevcut kullanıcının ID'sini al
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Name == User.Identity.Name);
             if (user == null)
             {
                 return RedirectToAction("Login", "Account");
             }
 
-            // 3. UserPlant nesnesini oluştur
+            //UserPlant nesnesini oluştur
             var newUserPlant = new UserPlant
             {
                 PlantID = catalogPlant.PlantID,
@@ -79,10 +96,10 @@ namespace FloraMind_V1.Controllers
                 DateAdopted = DateTime.Now
             };
 
-            // 4. Sulama hesaplamasını yap
+            // Sulama hesaplamasını yap
             newUserPlant.PerformWatering();
 
-            // 5. Veritabanına ekle
+            // Veritabanına ekle
             _context.UserPlants.Add(newUserPlant);
             await _context.SaveChangesAsync();
 

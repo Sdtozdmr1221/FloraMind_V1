@@ -24,33 +24,19 @@ public class AdminController : Controller
 
 
 
-
     [HttpGet]
-        public async Task<IActionResult> UserList()
-        {
-            var users = await _userService.GetAllUsersAsync();
-
-            return View("~/Views/Admin/UserList.cshtml", users);
-        }
-
-        // 2. Rol Yükseltme Metodu (POST)
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> PromoteToAdmin(int id)
-        {
-            await _userService.UpdateUserRole(id, "Admin");
-            return RedirectToAction(nameof(UserList));
-        }
-
     public async Task<IActionResult> UserList(string searchString)
     {
-        
         ViewData["CurrentFilter"] = searchString;
 
         var users = await _userService.GetUsersAsync(searchString);
 
-        
-        return View(users);
+        if (users == null)
+        {
+            users = new List<User>();
+        }
+
+        return View("~/Views/Admin/UserList.cshtml", users);
     }
 
 

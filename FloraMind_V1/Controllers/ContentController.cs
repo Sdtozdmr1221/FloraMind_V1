@@ -21,7 +21,7 @@ namespace FloraMind_V1.Controllers
             _context = context;
         }
 
-      
+        // Oturum açmış kullanıcının ID'sini alır
         private int GetLoggedInUserId()
         {
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -34,7 +34,7 @@ namespace FloraMind_V1.Controllers
         }
 
 
-      
+        // GET: Content
         public async Task<IActionResult> Index()
         {
            
@@ -107,7 +107,6 @@ namespace FloraMind_V1.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            // Hata varsa dropdown'ı tekrar doldur
             ViewBag.PlantID = new SelectList(await _context.Plants.ToListAsync(), "PlantID", "Name", content.PlantID);
             return View(content);
         }
@@ -126,7 +125,6 @@ namespace FloraMind_V1.Controllers
             {
                 return NotFound();
             }
-            // Sadece Plant listesi View'a gönderilir
             ViewData["PlantID"] = new SelectList(await _context.Plants.ToListAsync(), "PlantID", "Name", content.PlantID);
             return View(content);
         }
@@ -164,7 +162,6 @@ namespace FloraMind_V1.Controllers
                 }
             }
 
-            // Hata olursa dropdown tekrar dolsun
             ViewBag.PlantID = new SelectList(await _context.Plants.ToListAsync(), "PlantID", "Name", content.PlantID);
             return View(content);
         }
@@ -172,7 +169,6 @@ namespace FloraMind_V1.Controllers
         // GET: Content/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            // Details ile aynı mantık: ilişkili verileri yükle
             if (id == null)
             {
                 return NotFound();

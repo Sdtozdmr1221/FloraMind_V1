@@ -29,25 +29,25 @@ namespace FloraMind_V1.Controllers
                 return userId;
             }
 
-            // Geliştirme aşaması için varsayılan ID
+           
             return 1;
         }
 
-        // --- SAYFAYI GÖRÜNTÜLEME ---
+        
         public async Task<IActionResult> Index()
         {
             var userId = GetLoggedInUserId();
 
             var userPlants = await _context.UserPlants
                                            .Where(up => up.UserID == userId)
-                                           .Include(up => up.Plant) // Bitki detaylarını (resim, isim) çek
+                                           .Include(up => up.Plant) // Bitki detaylarını çek
                                            .ThenInclude(p => p.Contents)
                                            .ToListAsync();
 
             return View(userPlants);
         }
 
-        // --- BİTKİ EKLEME (Katalogdan) ---
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(int plantId)
@@ -60,20 +60,16 @@ namespace FloraMind_V1.Controllers
                 return NotFound("Katalogda bu ID'ye sahip bir bitki bulunamadı.");
             }
 
-            var existingUserPlant = await _context.UserPlants
-                                            .AnyAsync(up => up.UserID == userId && up.PlantID == plantId);
-            if (existingUserPlant)
-            {
-                TempData["Message"] = $"{catalogPlant.Name} zaten koleksiyonunuzda mevcut.";
-                return RedirectToAction(nameof(Index));
-            }
+            . 
+            // Aynı bitkiden birden fazla eklenebilir.
 
             var newUserPlant = new UserPlant
             {
                 UserID = userId,
                 PlantID = plantId,
                 DateAdopted = DateTime.UtcNow,
-                LastWatered = DateTime.UtcNow
+                LastWatered = DateTime.UtcNow,
+                Nickname = catalogPlant.Name 
             };
 
             _context.UserPlants.Add(newUserPlant);
@@ -83,15 +79,13 @@ namespace FloraMind_V1.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // --- SULAMA İŞLEMİ ---
+       
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> WaterPlant(int id) // İsim View ile uyumlu hale getirildi (id)
+        public async Task<IActionResult> WaterPlant(int id)
         {
             var userId = GetLoggedInUserId();
 
-            // Bitkiyi ve ilişkili Katalog bilgilerini (Plant) birlikte çekiyoruz 
-            // ki sulama aralığını (DefaultWateringIntervalHours) görebilelim.
             var userPlant = await _context.UserPlants
                 .Include(up => up.Plant)
                 .FirstOrDefaultAsync(up => up.UserPlantID == id && up.UserID == userId);
@@ -100,18 +94,22 @@ namespace FloraMind_V1.Controllers
             {
                 return NotFound("Sulama işlemi için uygun bir bitki kaydı bulunamadı.");
             }
-
-            // 1. Son sulama zamanını şu an olarak ayarla
+            
+            // Son sulama zamanını şu an olarak ayarla
             userPlant.LastWatered = DateTime.Now;
 
-            
             double aralik = userPlant.WateringIntervalHours > 0
                           ? userPlant.WateringIntervalHours
                           : (userPlant.Plant != null ? (double)userPlant.Plant.DefaultWateringIntervalHours : 24.0);
 
             userPlant.NextWateringDate = DateTime.Now.AddHours(aralik);
 
-            // 3. Değişiklikleri kaydet
+
+            // Bitki sulandığı için "E-posta gönderildi" bilgisini sıfırlıyoruz.
+
+            userPlant.IsEmailSent = false;
+            // ----------------------------
+
             _context.Update(userPlant);
             await _context.SaveChangesAsync();
 
@@ -119,42 +117,50 @@ namespace FloraMind_V1.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // --- SİLME İŞLEMİ (YENİ EKLENEN KISIM) ---
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Remove(int userPlantId)
+        public async Task<IActionResult> Delete(int id)
         {
             var userId = GetLoggedInUserId();
 
-            // Sadece giriş yapan kullanıcıya ait olan ve ID'si eşleşen bitkiyi bul
+            // Sadece o kullanıcıya ait bitkiyi bul
             var userPlantToDelete = await _context.UserPlants
-                .FirstOrDefaultAsync(up => up.UserPlantID == userPlantId && up.UserID == userId);
+                .FirstOrDefaultAsync(up => up.UserPlantID == id && up.UserID == userId);
 
             if (userPlantToDelete != null)
             {
                 _context.UserPlants.Remove(userPlantToDelete);
                 await _context.SaveChangesAsync();
-                TempData["Message"] = "Bitki listenizden çıkarıldı.";
+                TempData["Message"] = "Bitki bahçenizden silindi.";
             }
             else
             {
                 TempData["Error"] = "Bitki bulunamadı veya silinemedi.";
             }
 
-            // İşlem bitince sayfayı yenile (Index'e git)
             return RedirectToAction(nameof(Index));
         }
 
+        -
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateNickname(int id, string newNickname)
         {
-            var userPlant = await _context.UserPlants.FindAsync(id);
+            var userId = GetLoggedInUserId();
+
+            // Sadece kendi bitkisinin ismini değiştirebilsin
+            var userPlant = await _context.UserPlants
+                .FirstOrDefaultAsync(up => up.UserPlantID == id && up.UserID == userId);
+
             if (userPlant == null) return NotFound();
 
             userPlant.Nickname = newNickname;
             await _context.SaveChangesAsync();
 
-            return RedirectToAction(nameof(Index)); // Bitkilerim listesine geri dön
+            TempData["Message"] = "Bitki ismi güncellendi.";
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }

@@ -3,7 +3,7 @@ using FloraMind_V1.Models;
 using Microsoft.EntityFrameworkCore;
 namespace FloraMind_V1.Services
 {
-    
+
     public class UserService : IUserService
     {
         private readonly FloraMindDbContext _context;
@@ -15,7 +15,7 @@ namespace FloraMind_V1.Services
 
         public async Task<List<User>> GetAllUsersAsync()
         {
-          
+
             return await _context.Users.ToListAsync();
         }
 
@@ -56,26 +56,21 @@ namespace FloraMind_V1.Services
 
         public async Task<IEnumerable<User>> GetUsersAsync(string searchString = null)
         {
-            var users = _context.Users.AsQueryable();
+            var query = _context.Users.AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(searchString))
             {
                 var term = searchString.Trim();
+                bool isNumeric = int.TryParse(term, out int userId);
 
-                users = users.Where(u =>
-                    EF.Functions.Like(u.Name, $"%{term}%")
+                // Name içinde arama yap VEYA ID ile tam eşleşme ara
+                query = query.Where(u =>
+                    EF.Functions.Like(u.Name, $"%{term}%") ||
+                    (isNumeric && u.UserID == userId)
                 );
-
-                // Eğer sadece rakamsa ID'den ara
-                if (int.TryParse(term, out int userId))
-                {
-                    users = users.Union(
-                        _context.Users.Where(u => u.UserID == userId)
-                    );
-                }
             }
 
-            return await users.ToListAsync();
+            return await query.OrderByDescending(u => u.RegistrationDate).ToListAsync();
         }
 
 
@@ -94,7 +89,7 @@ namespace FloraMind_V1.Services
                 // Değişiklikleri veritabanına kaydet
                 await _context.SaveChangesAsync();
             }
-            
+
         }
 
         public async Task<User> GetUserByIdAsync(int userId)

@@ -212,7 +212,7 @@ namespace FloraMind_V1.Migrations
                     b.Property<DateTime>("DateAdopted")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool?>("IsEmailSent")
+                    b.Property<bool>("IsEmailSent")
                         .HasColumnType("bit");
 
                     b.Property<DateTime>("LastWatered")

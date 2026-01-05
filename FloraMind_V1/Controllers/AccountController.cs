@@ -18,7 +18,7 @@ namespace FloraMind_V1.Controllers
         private readonly IUserService _userService;
         private readonly IEmailService _emailService; // Constructor'a ekle
 
-        // Tek ve birleşik constructor (DI için)
+        // Tek ve birleşik constructor 
         public AccountController(FloraMindDbContext context, IUserService userService, IEmailService EmailService)
         {
             _context = context;
@@ -100,7 +100,7 @@ namespace FloraMind_V1.Controllers
             var user = await _context.Users
                 .FirstOrDefaultAsync(u => u.Email == model.Email);
 
-            // Kullanıcı ve Şifre Kontrolü (Statik VerifyPassword kullanıldı)
+            // Kullanıcı ve Şifre Kontrolü 
             if (user == null || !SecurityHelper.VerifyPassword(model.Password, user.PasswordHash))
             {
                 ModelState.AddModelError(string.Empty, "Geçersiz email veya şifre");
@@ -116,7 +116,7 @@ namespace FloraMind_V1.Controllers
 
             await _userService.UpdateLastLoginDateAsync(user.UserID);
 
-            // CLAIMS TABANLI OTURUM AÇMA
+            // claims tabanlı oturum açma
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, user.UserID.ToString()),
@@ -139,6 +139,7 @@ namespace FloraMind_V1.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        // Oturumu kapatma
         [HttpPost]
         public async Task<IActionResult> Logout()
         {
@@ -148,7 +149,7 @@ namespace FloraMind_V1.Controllers
         }
 
 
-
+        // hesabım sayfası ve profil düzenleme
         [HttpGet]
         public async Task<IActionResult> Hesabim()
         {
@@ -174,6 +175,7 @@ namespace FloraMind_V1.Controllers
             return View(model);
         }
 
+        // Profil güncelleme işlemi
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Hesabim(EditProfileViewModel model)
