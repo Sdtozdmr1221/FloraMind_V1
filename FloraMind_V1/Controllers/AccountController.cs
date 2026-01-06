@@ -149,7 +149,12 @@ namespace FloraMind_V1.Controllers
         }
 
 
+<<<<<<< HEAD
         // hesabım sayfası ve profil düzenleme
+=======
+        // Hesabim - Profil Görüntüleme ve Düzenleme
+
+>>>>>>> d8c7b447be227eb7cbc2c982d1bee868abe87254
         [HttpGet]
         public async Task<IActionResult> Hesabim()
         {
@@ -175,7 +180,11 @@ namespace FloraMind_V1.Controllers
             return View(model);
         }
 
+<<<<<<< HEAD
         // Profil güncelleme işlemi
+=======
+        // Profil Güncelleme
+>>>>>>> d8c7b447be227eb7cbc2c982d1bee868abe87254
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Hesabim(EditProfileViewModel model)
@@ -233,6 +242,7 @@ namespace FloraMind_V1.Controllers
         }
 
 
+        // Şifre Sıfırlama İşlemleri
         [HttpPost]
         public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
         {
@@ -276,6 +286,7 @@ namespace FloraMind_V1.Controllers
             return View();
         }
 
+        // doğrulama kodu gönderimi
         [HttpPost]
         public async Task<IActionResult> VerifyCode(VerifyCodeViewModel model)
         {
@@ -301,6 +312,8 @@ namespace FloraMind_V1.Controllers
             ViewBag.Email = email;
             return View();
         }
+
+        // şifre sıfırlama işlemi
         [HttpPost]
         public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
         {

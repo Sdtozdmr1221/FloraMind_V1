@@ -16,7 +16,7 @@ public class AdminController : Controller
     private readonly FloraMindDbContext _context;
     private readonly IUserService _userService;
 
-    public AdminController(IUserService userService, FloraMindDbContext context) // Constructor nasıl?
+    public AdminController(IUserService userService, FloraMindDbContext context) // Constructor 
     {
         _userService = userService;
         _context = context;
@@ -33,12 +33,19 @@ public class AdminController : Controller
 
         if (users == null)
         {
+<<<<<<< HEAD
             users = new List<User>();
         }
 
         return View("~/Views/Admin/UserList.cshtml", users);
     }
+=======
+            users = new List<User>(); 
+        }
+>>>>>>> d8c7b447be227eb7cbc2c982d1bee868abe87254
 
+        return View("~/Views/Admin/UserList.cshtml", users);
+    }
 
     //kullanıcı hesaplarını askıya alma işlemleri
 

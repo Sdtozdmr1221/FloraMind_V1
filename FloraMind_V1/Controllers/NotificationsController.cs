@@ -16,7 +16,11 @@ namespace FloraMind_V1.Controllers
 
         public async Task<IActionResult> Index()
         {
+<<<<<<< HEAD
             // Giriş yapan kullanıcının ID'sini alıyoruz
+=======
+            // Giriş yapan kullanıcının ID'sini en güvenli yoldan (Claim) alıyoruz
+>>>>>>> d8c7b447be227eb7cbc2c982d1bee868abe87254
             var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             if (string.IsNullOrEmpty(userIdStr)) return RedirectToAction("Login", "Account");

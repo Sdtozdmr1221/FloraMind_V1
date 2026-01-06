@@ -29,7 +29,11 @@ namespace FloraMind_V1.Controllers
                 return userId;
             }
 
+<<<<<<< HEAD
            
+=======
+            
+>>>>>>> d8c7b447be227eb7cbc2c982d1bee868abe87254
             return 1;
         }
 
@@ -40,7 +44,11 @@ namespace FloraMind_V1.Controllers
 
             var userPlants = await _context.UserPlants
                                            .Where(up => up.UserID == userId)
+<<<<<<< HEAD
                                            .Include(up => up.Plant) // Bitki detaylarını çek
+=======
+                                           .Include(up => up.Plant) 
+>>>>>>> d8c7b447be227eb7cbc2c982d1bee868abe87254
                                            .ThenInclude(p => p.Contents)
                                            .ToListAsync();
 
@@ -64,7 +72,7 @@ namespace FloraMind_V1.Controllers
             // Aynı bitkiden birden fazla eklenebilir.
 
             var newUserPlant = new UserPlant
-            {
+            {   
                 UserID = userId,
                 PlantID = plantId,
                 DateAdopted = DateTime.UtcNow,
@@ -79,7 +87,11 @@ namespace FloraMind_V1.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+<<<<<<< HEAD
        
+=======
+
+>>>>>>> d8c7b447be227eb7cbc2c982d1bee868abe87254
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> WaterPlant(int id)
@@ -94,7 +106,11 @@ namespace FloraMind_V1.Controllers
             {
                 return NotFound("Sulama işlemi için uygun bir bitki kaydı bulunamadı.");
             }
+<<<<<<< HEAD
             
+=======
+
+>>>>>>> d8c7b447be227eb7cbc2c982d1bee868abe87254
             // Son sulama zamanını şu an olarak ayarla
             userPlant.LastWatered = DateTime.Now;
 
@@ -104,7 +120,11 @@ namespace FloraMind_V1.Controllers
 
             userPlant.NextWateringDate = DateTime.Now.AddHours(aralik);
 
+<<<<<<< HEAD
 
+=======
+            
+>>>>>>> d8c7b447be227eb7cbc2c982d1bee868abe87254
             // Bitki sulandığı için "E-posta gönderildi" bilgisini sıfırlıyoruz.
 
             userPlant.IsEmailSent = false;
@@ -117,14 +137,22 @@ namespace FloraMind_V1.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> d8c7b447be227eb7cbc2c982d1bee868abe87254
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
             var userId = GetLoggedInUserId();
 
+<<<<<<< HEAD
             // Sadece o kullanıcıya ait bitkiyi bul
+=======
+            
+>>>>>>> d8c7b447be227eb7cbc2c982d1bee868abe87254
             var userPlantToDelete = await _context.UserPlants
                 .FirstOrDefaultAsync(up => up.UserPlantID == id && up.UserID == userId);
 
@@ -139,10 +167,41 @@ namespace FloraMind_V1.Controllers
                 TempData["Error"] = "Bitki bulunamadı veya silinemedi.";
             }
 
+<<<<<<< HEAD
             return RedirectToAction(nameof(Index));
         }
 
         -
+=======
+
+            
+            return RedirectToAction(nameof(Index));
+        }
+          
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var userId = GetLoggedInUserId();
+
+            
+            var silinecekBitki = await _context.UserPlants
+                .FirstOrDefaultAsync(up => up.UserPlantID == id && up.UserID == userId);
+
+           
+            if (silinecekBitki != null)
+            {
+                _context.UserPlants.Remove(silinecekBitki);
+                await _context.SaveChangesAsync();
+                TempData["Message"] = "Bitki başarıyla silindi.";
+            }
+
+            
+            return RedirectToAction(nameof(Index));
+        }
+
+        // POST: UserPlants/UpdateNickname/5
+>>>>>>> d8c7b447be227eb7cbc2c982d1bee868abe87254
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateNickname(int id, string newNickname)

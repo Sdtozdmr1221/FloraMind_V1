@@ -21,7 +21,11 @@ namespace FloraMind_V1.Controllers
             _context = context;
         }
 
+<<<<<<< HEAD
         // Oturum açmış kullanıcının ID'sini alır
+=======
+        // Giriş yapan kullanıcının ID'sini alır
+>>>>>>> d8c7b447be227eb7cbc2c982d1bee868abe87254
         private int GetLoggedInUserId()
         {
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -46,7 +50,7 @@ namespace FloraMind_V1.Controllers
             return View(contents);
         }
 
-        
+        // GET: Content/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -67,7 +71,7 @@ namespace FloraMind_V1.Controllers
             return View(content);
         }
 
-       
+        // GET: Content/Create
         public async Task<IActionResult> Create()
         {
             
@@ -75,7 +79,7 @@ namespace FloraMind_V1.Controllers
             return View();
         }
 
-       
+        // POST: Content/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Title,Body,PlantID")] Content content)
@@ -112,7 +116,7 @@ namespace FloraMind_V1.Controllers
         }
 
 
-        
+        // GET: Content/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -129,7 +133,7 @@ namespace FloraMind_V1.Controllers
             return View(content);
         }
 
-
+        // POST: Content/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ContentID,Title,Body,PlantID,UserID,DateCreated")] Content content)

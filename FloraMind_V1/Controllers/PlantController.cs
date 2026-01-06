@@ -138,8 +138,11 @@ namespace FloraMind_V1.Controllers
         }
 
         
+<<<<<<< HEAD
         // 1. ADIM: Onay Sayfasını Görüntüleyen Metot
         
+=======
+>>>>>>> d8c7b447be227eb7cbc2c982d1bee868abe87254
         [HttpGet]
         public async Task<IActionResult> Delete(int? id)
         {
@@ -150,10 +153,16 @@ namespace FloraMind_V1.Controllers
 
             if (plant == null) return NotFound();
 
+<<<<<<< HEAD
             return View(plant);
         }
 
         // Butona Basınca Silen Metot
+=======
+            return View(plant); 
+        }
+
+>>>>>>> d8c7b447be227eb7cbc2c982d1bee868abe87254
         
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
